@@ -1,27 +1,8 @@
- // inject Google Maps API file
- const head = document.getElementsByTagName('head')[0];
- const script = document.createElement('script');
- script.type = 'text/javascript';
- script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyChcp4x8Khn1P32qeoXBipluszPDdHALIU&libraries=places';
- // head.appendChild(script);
+let script = document.createElement('script');
+script.src = chrome.extension.getURL('script.js');
+(document.body || document.head || document.documentElement).appendChild(script);
 
-
-const init = () => {
-    console.log(getSearchElements());
-}
-
-const getSearchElements = () => {
-    console.log();
-    let items = document.querySelectorAll('.dl-search-result');
-
-    items.forEach( function(element, index) {
-        let name = element.children[0].children[0].children[1].children[0].textContent;
-        console.log(name);
-        // getPlaceInfo(name)
-    });
-
-    return items;
-}
-
-init();
-
+// append hidden map container
+let mapElement = document.createElement('div');
+    mapElement.id = 'map';
+document.body.appendChild(mapElement);

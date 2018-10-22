@@ -25,6 +25,7 @@
       "all_frames": false
     }
   ],
+  "web_accessible_resources": ["script.js"],
   "content_security_policy": "script-src 'self' https://maps.googleapis.com; object-src 'self'"
 }
 
