@@ -1,0 +1,35 @@
+.rating {
+  color: #e7711b;
+  font-size: 13px;
+  margin-bottom: -10px;
+}
+
+.rating.wait {
+  color: #ccc;
+  animation: loading 1s infinite;
+}
+
+@keyframes loading {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.rating-stars,
+.rating-stars span {
+  display: inline-block;
+  height: 13px;
+}
+
+/* empty stars */
+.rating-stars {
+  vertical-align: text-top;
+  margin-left: 5px;
+  width: 69px;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 13" width="14" height="13"><polygon style="fill:#d1d1d1" points="6.8,0 8.4,5 13.7,5 9.4,8 11.1,13 6.8,9.9 2.6,13 4.2,8 0,5 5.2,5 "/></svg>')
+}
+
+/* orange stars */
+.rating-stars span {
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 13" width="14" height="13"><polygon style="fill:#e7711b" points="6.8,0 8.4,5 13.7,5 9.4,8 11.1,13 6.8,9.9 2.6,13 4.2,8 0,5 5.2,5 "/></svg>')
+}

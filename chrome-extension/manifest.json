@@ -21,6 +21,7 @@
       "js": [
         "js/content.js"
       ],
+      "css" : ["css/style.css"],
       "run_at": "document_end",
       "all_frames": false
     }
