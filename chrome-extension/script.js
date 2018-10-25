@@ -6,31 +6,27 @@ const init = () => {
 }
 
 // append rating
-const appendRating = (elm, status = null, rate = null) => {
-    let classes = ['rating'];
+const appendRating = (elm) => {
+    let rating = document.createElement('div');
+        rating.classList = 'rating wait';
+        rating.innerHTML = '<span class="rating-stars"></span>';
+    elm.appendChild(rating);
+}
+
+function updateRating(elm, results, status) {
     let innerHTML;
 
-    if (status === 'wait') {
-        // init
-        classes.push('wait');
-        innerHTML = '<span class="rating-stars"></span>'
-    } else if (status === 'OK') {
+    if (status === 'OK') {
+        let rate = results[0].rating;
         // get result
-        innerHTML = '<span class="rating-stars"><span style="width: 0"></span></span>'
+        innerHTML = rate + ' <span class="rating-stars"><span style="width: 0"></span></span>';
     } else {
         // error
         innerHTML = '';
     }
 
-    let rating = document.createElement('div');
-        rating.classList = classes.join(' ');
-        rating.innerHTML = innerHTML;
-    elm.appendChild(rating);
-}
-
-function updateRating(results, status) {
-  console.log(status, results);
-  // appendRating();
+    elm.querySelectorAll('.rating')[0].classList.remove('wait');
+    elm.querySelectorAll('.rating')[0].innerHTML = innerHTML;
 }
 
 // browse search DOM
@@ -39,23 +35,25 @@ const getSearchElements = () => {
 
     items.forEach( function(element, index) {
         let name = element.querySelectorAll('.dl-search-result-name')[0].textContent;
+        let elmTarget = element.querySelectorAll('.dl-search-result-title')[0];
         console.log(name);
-        appendRating(element.querySelectorAll('.dl-search-result-title')[0], 'wait');
-        getPlaceInfo(name, element);
+        appendRating(elmTarget, 'wait');
+        getPlaceInfo(name, elmTarget);
     });
-
-    return items;
 }
 
 // request place data
-const getPlaceInfo = (query, element) => {
-  let request = {
-    query: query,
-    // https://developers.google.com/places/web-service/details#fields
-    fields: ['name', 'formatted_address', 'rating', 'type'],
-  };
+const getPlaceInfo = (query, elm) => {
+    let request = {
+        query: query,
+        // https://developers.google.com/places/web-service/details#fields
+        fields: ['name', 'formatted_address', 'rating'],
+    };
 
-  mapService.findPlaceFromQuery(request, updateRating);
+    mapService.findPlaceFromQuery(request, function(results, status) {
+        console.log(query, status, results);
+        updateRating(elm, results, status);
+    });
 }
 
 
