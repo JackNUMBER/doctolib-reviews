@@ -19,7 +19,7 @@ function updateRating(elm, results, status) {
     if (status === 'OK') {
         let rate = results[0].rating;
         // get result
-        innerHTML = rate + ' <span class="rating-stars"><span style="width: 0"></span></span>';
+        innerHTML = rate + ' <span class="rating-stars"><span style="width: ' + computeStars(rate) + '"></span></span>';
     } else {
         // error
         innerHTML = '';
@@ -56,5 +56,15 @@ const getPlaceInfo = (query, elm) => {
     });
 }
 
+// calculate stars element width
+function computeStars(rate) {
+  const baseSize = 69; // container's width (grey stars)
+
+  // roundoff rate to nearest 0.5 for a half or plain star
+  let rateRounded = Math.round(rate * 2) / 2;
+  let starsWidth = Math.ceil(rateRounded * 69 / 5);
+
+  return starsWidth + 'px';
+}
 
 init();
