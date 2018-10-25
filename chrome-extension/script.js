@@ -16,7 +16,7 @@ const appendRating = (elm) => {
 function updateRating(elm, results, status) {
     let innerHTML;
 
-    if (status === 'OK') {
+    if (status === 'OK' && results[0].rating !== 0) {
         let rate = results[0].rating;
         // get result
         innerHTML = rate + ' <span class="rating-stars"><span style="width: ' + computeStars(rate) + '"></span></span>';
