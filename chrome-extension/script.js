@@ -29,14 +29,13 @@ function updateRating(elm, results, status) {
     elm.querySelectorAll('.rating')[0].innerHTML = innerHTML;
 }
 
-// browse search DOM
+// browse page elements on search
 const getSearchElements = () => {
     let items = document.querySelectorAll('.dl-search-result');
 
     items.forEach( function(element, index) {
         let name = element.querySelectorAll('.dl-search-result-name')[0].textContent;
         let elmTarget = element.querySelectorAll('.dl-search-result-title')[0];
-        console.log(name);
         appendRating(elmTarget, 'wait');
         getPlaceInfo(name, elmTarget);
     });
@@ -47,11 +46,11 @@ const getPlaceInfo = (query, elm) => {
     let request = {
         query: query,
         // https://developers.google.com/places/web-service/details#fields
-        fields: ['name', 'formatted_address', 'rating'],
+        fields: ['id', 'name', 'formatted_address', 'rating'],
     };
 
     mapService.findPlaceFromQuery(request, function(results, status) {
-        console.log(query, status, results);
+        // console.log(query, status, results);
         updateRating(elm, results, status);
     });
 }

@@ -1,8 +1,10 @@
 let script = document.createElement('script');
 script.src = chrome.extension.getURL('script.js');
-setTimeout(function(){
 
-(document.body || document.head || document.documentElement).appendChild(script);
+// wait window.google
+// LMK if you have any suggestion about how to improve that shit
+setTimeout(function(){
+    (document.body || document.head || document.documentElement).appendChild(script);
 }, 300)
 
 // append hidden map container
