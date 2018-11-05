@@ -3,7 +3,7 @@ script.src = chrome.extension.getURL('script.js');
 
 // wait window.google
 // LMK if you have any suggestion about how to improve that shit
-setTimeout(function(){
+setTimeout(() => {
     (document.body || document.head || document.documentElement).appendChild(script);
 }, 300)
 

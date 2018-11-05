@@ -6,14 +6,14 @@ const init = () => {
 }
 
 // append rating
-const appendRating = (elm) => {
+const appendRating = elm => {
     let rating = document.createElement('div');
         rating.classList = 'rating wait';
         rating.innerHTML = '<span class="rating-stars"></span>';
     elm.appendChild(rating);
 }
 
-function updateRating(elm, results, status) {
+const updateRating = (elm, results, status) => {
     let innerHTML;
 
     if (status === 'OK' && results[0].rating !== 0) {
@@ -33,7 +33,7 @@ function updateRating(elm, results, status) {
 const getSearchElements = () => {
     let items = document.querySelectorAll('.dl-search-result');
 
-    items.forEach( function(element, index) {
+    items.forEach((element, index) => {
         let name = element.querySelectorAll('.dl-search-result-name')[0].textContent;
         let elmTarget = element.querySelectorAll('.dl-search-result-title')[0];
         appendRating(elmTarget, 'wait');
@@ -49,14 +49,14 @@ const getPlaceInfo = (query, elm) => {
         fields: ['id', 'name', 'formatted_address', 'rating'],
     };
 
-    mapService.findPlaceFromQuery(request, function(results, status) {
+    mapService.findPlaceFromQuery(request, (results, status) => {
         // console.log(query, status, results);
         updateRating(elm, results, status);
     });
 }
 
 // calculate stars element width
-function computeStars(rate) {
+const computeStars = rate => {
   const baseSize = 69; // container's width (grey stars)
 
   // roundoff rate to nearest 0.5 for a half or plain star
