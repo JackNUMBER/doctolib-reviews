@@ -1,8 +1,28 @@
 const map = new google.maps.Map(document.getElementById('map'));
 const mapService = new google.maps.places.PlacesService(map);
+const PAGE_SEARCH = 'search';
 
 const init = () => {
-    getSearchElements();
+    switch (getCurrentPage()) {
+      case PAGE_SEARCH:
+        getSearchElements();
+        break;
+      default:
+        return;
+    }
+}
+
+const getCurrentPage = elm => {
+    const bodyClassList = document.body.classList;
+
+    if (
+        bodyClassList.contains('profiles')
+        && bodyClassList.contains('index')
+    ) {
+        // search page
+        return PAGE_SEARCH;
+    }
+
 }
 
 // append rating
@@ -61,7 +81,7 @@ const computeStars = rate => {
 
   // roundoff rate to nearest 0.5 for a half or plain star
   let rateRounded = Math.round(rate * 2) / 2;
-  let starsWidth = Math.ceil(rateRounded * 69 / 5);
+  let starsWidth = Math.ceil(rateRounded * baseSize / 5);
 
   return starsWidth + 'px';
 }
