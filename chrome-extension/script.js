@@ -1,5 +1,3 @@
-const map = new google.maps.Map(document.getElementById('map'));
-const mapService = new google.maps.places.PlacesService(map);
 const PAGE_SEARCH = 'search';
 
 const init = () => {
@@ -61,13 +59,22 @@ const getSearchElements = () => {
     });
 }
 
+// browse page elements on search
+const getProfileElement = () => {
+    let item = document.querySelectorAll('.dl-profile-header-name-speciality');
+    console.log('getProfileElement', item);
+}
+
 // request place data
 const getPlaceInfo = (query, elm) => {
-    let request = {
+    const request = {
         query: query,
         // https://developers.google.com/places/web-service/details#fields
         fields: ['id', 'name', 'formatted_address', 'rating'],
     };
+
+    const map = new google.maps.Map(document.getElementById('map'));
+    const mapService = new google.maps.places.PlacesService(map);
 
     mapService.findPlaceFromQuery(request, (results, status) => {
         // console.log(query, status, results);
