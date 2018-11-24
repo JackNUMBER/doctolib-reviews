@@ -1,9 +1,13 @@
 const PAGE_SEARCH = 'search';
+const PAGE_PROFILE = 'profile';
 
 const init = () => {
     switch (getCurrentPage()) {
       case PAGE_SEARCH:
         getSearchElements();
+        break;
+      case PAGE_PROFILE:
+        getProfileElement();
         break;
       default:
         return;
@@ -19,8 +23,13 @@ const getCurrentPage = elm => {
     ) {
         // search page
         return PAGE_SEARCH;
+    } else if (
+        bodyClassList.contains('profiles')
+        && bodyClassList.contains('show')
+    ) {
+        // profile page
+        return PAGE_PROFILE;
     }
-
 }
 
 // append rating
@@ -54,15 +63,17 @@ const getSearchElements = () => {
     items.forEach((element, index) => {
         let name = element.querySelectorAll('.dl-search-result-name')[0].textContent;
         let elmTarget = element.querySelectorAll('.dl-search-result-title')[0];
-        appendRating(elmTarget, 'wait');
+        appendRating(elmTarget);
         getPlaceInfo(name, elmTarget);
     });
 }
 
 // browse page elements on search
 const getProfileElement = () => {
-    let item = document.querySelectorAll('.dl-profile-header-name-speciality');
-    console.log('getProfileElement', item);
+    let elmTarget = document.querySelectorAll('.dl-profile-header-name-speciality')[0];
+    let name = document.querySelectorAll('.dl-profile-header-name')[0].textContent;
+    appendRating(elmTarget);
+    getPlaceInfo(name, elmTarget);
 }
 
 // request place data
