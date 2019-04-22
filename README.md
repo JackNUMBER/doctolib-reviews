@@ -5,7 +5,8 @@
   [link-cws]: https://chrome.google.com/webstore/detail/npmhub/nbigaelaoahpgaiibjofgpjneodndljj "Go to Chrome Web Store"
   [link-amo]: https://addons.mozilla.org/en-US/firefox/addon/avis-doctolib/ "Go to Firefox add-ons"
 
-  
+![](images/hero.jpg)
+
 :fr:
 
 Ce projet existe uniquement pour aider les utilisateurs de la plateforme [Doctolib](https://doctolib.fr) à trouver un bon praticien. En effet ce site refuse d'afficher les notes que les patients attribuent aux médecins afin de s'assurer que leurs partenariats avec les cabinets ne soient pas dégradés. Pourtant la plateforme américaine ZocDoc le fait sans problème.
