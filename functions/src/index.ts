@@ -1,13 +1,17 @@
 import {onRequest} from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
-import * as functions from "firebase-functions";
 import axios from "axios";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const {defineSecret} = require("firebase-functions/params");
+
+
 const findPlaceFromTextUrl = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json";
-const GoogleMapsAPIKey = functions.config().google.api_key;
+
+const GoogleMapsAPIKey = defineSecret("GOOGLE_API_KEY");
 
 export const getDoctorRating = onRequest(async (request, response) => {
-  console.log(request)
+  console.log(request);
   const {name, address} = request.query;
 
   if (!name || !address) {
@@ -21,7 +25,7 @@ export const getDoctorRating = onRequest(async (request, response) => {
     input: `${name} ${address}`,
     inputtype: "textquery",
     fields: "place_id,name,rating,formatted_address",
-    key: GoogleMapsAPIKey,
+    key: GoogleMapsAPIKey.value(),
   });
 
   url.search = params.toString();
