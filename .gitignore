@@ -2,3 +2,4 @@
 releases/
 assets/
 ressources/
+*.DS_Store
