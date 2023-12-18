@@ -15,8 +15,8 @@ const GoogleMapsAPIKey = defineString("GOOGLE_API_KEY");
 export const getDoctorRating = onRequest(async (request, response) => {
   const {name, address} = request.query;
 
-  if (!name || !address) {
-    response.status(400).send("Missing name or address");
+  if (!name) {
+    response.status(400).send("Missing name parameter");
     return;
   }
 
@@ -34,7 +34,7 @@ export const getDoctorRating = onRequest(async (request, response) => {
   try {
     const apiResponse = await axios.get(url.toString());
     const data = apiResponse.data;
-    response.set("Access-Control-Allow-Origin", "*");
+    response.set("Access-Control-Allow-Origin", "https://www.doctolib.fr");
     response.send(data);
   } catch (error) {
     logger.error("Error:", error);
