@@ -65,10 +65,17 @@ const updateRating = (elm, results, status) => {
     let innerHTML;
 
     const rating = results[0]?.rating
+    const place_id = results[0]?.place_id
     if (status === 'OK' && rating && rating !== 0) {
         let rate = results[0].rating || "NF";
-        // get result
-        innerHTML = rate + ' <span class="rating-stars"><span style="width: ' + computeStars(rate) + '"></span></span>';
+        // set results
+        innerHTML = `
+            <a href="https://www.google.com/maps/place/?q=place_id:${place_id}" target="_blank" rel="noreferrer noopener">
+                ${rate} 
+                <span class="rating-stars">
+                    <span style="width: ${computeStars(rate)}"></span>
+                </span>
+            </a>`;
     } else {
         // error
         innerHTML = '';
