@@ -1,7 +1,8 @@
 {
+  "manifest_version": 3,
   "name": "Avis Doctolib",
-  "version": "1.0.1",
-  "manifest_version": 2,
+  "version": "1.0.2",
+  "author": "Jack NUMBER",
   "description": "Affiche les notes des praticiens sur Doctolib",
   "homepage_url": "https://github.com/JackNUMBER/doctolib-reviews",
   "icons": {
@@ -9,8 +10,11 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "author": "Jack NUMBER",
   "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
     "https://*.doctolib.fr/*"
   ],
   "content_scripts": [
@@ -26,8 +30,13 @@
       "all_frames": false
     }
   ],
-  "web_accessible_resources": ["script.js"],
-  "content_security_policy": "script-src 'self' https://maps.googleapis.com; object-src 'self'"
+  "web_accessible_resources": [
+    {
+      "resources": ["script.js"],
+      "matches": ["https://*.doctolib.fr/*"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }
-
-
