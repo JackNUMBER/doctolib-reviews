@@ -1,11 +1,6 @@
 const PAGE_SEARCH = 'search';
 const PAGE_PROFILE = 'profile';
-
-// Select the node that will be observed for mutations
-const targetNode = document.querySelector('body'); // or any other node
-
-// Options for the observer (which mutations to observe)
-const config = { childList: true, subtree: true };
+const API_BASE_URL = 'https://getdoctorrating-v5puavkc4q-uc.a.run.app/';
 
 // Callback function to execute when mutations are observed
 const searchPageCallback = function(mutationsList, observer) {
@@ -27,7 +22,9 @@ const init = () => {
     switch (getCurrentPage()) {
       case PAGE_SEARCH:
         const observer = new MutationObserver(searchPageCallback);
-        observer.observe(targetNode, config);
+        const bodyNode = document.querySelector('body'); // or any other node
+        const config = { childList: true, subtree: true };
+        observer.observe(bodyNode, config);
         break;
       case PAGE_PROFILE:
         getProfileElement();
@@ -39,15 +36,12 @@ const init = () => {
 
 const getCurrentPage = elm => {
     const bodyClassList = document.body.classList;
-    console.log("Getting current page")
-    console.log({bodyClassList})
 
     if (
         bodyClassList.contains('search_results-online_booking_search')
         && bodyClassList.contains('index')
     ) {
         // search page
-        console.log("PAGE_SEARCH")
         return PAGE_SEARCH;
     } else if (
         bodyClassList.contains('profiles')
@@ -55,9 +49,8 @@ const getCurrentPage = elm => {
     ) {
         // profile page
         return PAGE_PROFILE;
-        console.log("PAGE_PROFILE")
     }
-    console.log("PAGE_NONE")
+    console.log("PAGE_NOT_PROCESSABLE")
 }
 
 // append rating
@@ -71,8 +64,9 @@ const appendRating = elm => {
 const updateRating = (elm, results, status) => {
     let innerHTML;
 
-    if (status === 'OK' && results[0].rating !== 0) {
-        let rate = results[0].rating;
+    const rating = results[0]?.rating
+    if (status === 'OK' && rating && rating !== 0) {
+        let rate = results[0].rating || "NF";
         // get result
         innerHTML = rate + ' <span class="rating-stars"><span style="width: ' + computeStars(rate) + '"></span></span>';
     } else {
@@ -104,11 +98,17 @@ const getSearchElements = () => {
     let items = document.querySelectorAll('.dl-search-result');
 
     items.forEach((element, index) => {
-        let name = element.querySelector('[data-test="dl-search-result-name"]').textContent;
-        console.log(name);
+        const name = element.querySelector('[data-test="dl-search-result-name"]').textContent;
+
+        const addressDiv = element.querySelector('.ml-96');
+
+        const addressElements = addressDiv.querySelectorAll('.dl-text.dl-text-body.dl-text-regular.dl-text-s');
+
+        const addresses = Array.from(addressElements).map(element => element.textContent)?.slice(0, 2);
+        const address = addresses[0] || null;
         let elmTarget = element.querySelectorAll('.dl-search-result-title')[0];
         appendRating(elmTarget);
-        // getPlaceInfo(name, elmTarget);
+        getPlaceInfo(name, address, elmTarget);
     });
 }
 
@@ -117,24 +117,31 @@ const getProfileElement = () => {
     let elmTarget = document.querySelectorAll('.dl-profile-header-name-speciality')[0];
     let name = document.querySelectorAll('.dl-profile-header-name')[0].textContent;
     appendRating(elmTarget);
-    getPlaceInfo(name, elmTarget);
+    // TODO - find address on profile page
+    getPlaceInfo(name, null, elmTarget);
 }
 
 // request place data
-const getPlaceInfo = (query, elm) => {
-    const request = {
-        query: query,
-        // https://developers.google.com/places/web-service/details#fields
-        fields: ['id', 'name', 'formatted_address', 'rating'],
-    };
+const getPlaceInfo = (name, address, elm) => {
+    // encode list of non null elements into a query string    
+    let url = API_BASE_URL.concat(`?name=${name}`);
+    if (address) {
+      url = url.concat(`&address=${address}`);
+    }
 
-    const map = new google.maps.Map(document.getElementById('map'));
-    const mapService = new google.maps.places.PlacesService(map);
-
-    mapService.findPlaceFromQuery(request, (results, status) => {
-        // console.log(query, status, results);
-        updateRating(elm, results, status);
-    });
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const status = data.status;
+            const results = data.candidates;
+            if (status === 'OK' && results.length) {
+                updateRating(elm, results, status);
+                return;
+            }
+            // console.log(name, address, status, results)
+            return;
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 // calculate stars element width
