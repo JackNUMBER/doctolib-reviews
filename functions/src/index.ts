@@ -13,7 +13,6 @@ const findPlaceFromTextUrl = "https://maps.googleapis.com/maps/api/place/findpla
 const GoogleMapsAPIKey = defineString("GOOGLE_API_KEY");
 
 export const getDoctorRating = onRequest(async (request, response) => {
-  console.log(request);
   const {name, address} = request.query;
 
   if (!name || !address) {
@@ -35,6 +34,7 @@ export const getDoctorRating = onRequest(async (request, response) => {
   try {
     const apiResponse = await axios.get(url.toString());
     const data = apiResponse.data;
+    response.set("Access-Control-Allow-Origin", "*");
     response.send(data);
   } catch (error) {
     logger.error("Error:", error);
