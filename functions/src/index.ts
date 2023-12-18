@@ -2,13 +2,15 @@ import {onRequest} from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
 import axios from "axios";
 
+// We are using defineString instead of defineSecret because
+// of an issue with the google cloud IAM authorizations.
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const {defineSecret} = require("firebase-functions/params");
+const {defineString} = require("firebase-functions/params");
 
 
 const findPlaceFromTextUrl = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json";
 
-const GoogleMapsAPIKey = defineSecret("GOOGLE_API_KEY");
+const GoogleMapsAPIKey = defineString("GOOGLE_API_KEY");
 
 export const getDoctorRating = onRequest(async (request, response) => {
   console.log(request);

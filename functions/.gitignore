@@ -10,3 +10,6 @@ node_modules/
 
 # debug files
 firebase-debug.log
+
+# env files
+.env.*
