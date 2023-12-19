@@ -1,5 +1,5 @@
 let script = document.createElement('script');
-script.src = chrome.extension.getURL('script.js');
+script.src = chrome.runtime.getURL('script.js');
 
 // wait window.google
 // LMK if you have any suggestion about how to improve that shit
